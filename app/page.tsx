@@ -3,68 +3,83 @@
 import { useState } from 'react'
 import styles from './page.module.css'
 
+// 1. Update Interface agar tabel field bisa dinamis
+interface FieldDefinition {
+  name: string
+  type: string
+  description: string
+}
+
 interface ApiEndpoint {
   method: string
   path: string
   description: string
   baseUrl: string
-  parameters?: {
-    name: string
-    type: string
-    description: string
-    required: boolean
-  }[]
+  fields: FieldDefinition[] // Array field untuk tabel dokumentasi
   response: {
     structure: any
     example: any
   }
 }
 
+// 2. Data diperbarui sesuai Context Blogpost & Directus
 const apiEndpoints: ApiEndpoint[] = [
   {
     method: 'GET',
-    path: '/items/devlog',
-    description: 'Mengambil data devlog dari blog. Menampilkan semua entri devlog dengan informasi task, project, PIC, dan waktu kerja.',
-    baseUrl: 'https://blog.kerjabaik.ai',
+    path: '/items/Blogpost',
+    description: 'Mengambil daftar artikel blog. Gunakan parameter ?fields=*.* untuk relasi lengkap.',
+    baseUrl: 'https://api.kerjabaik.ai',
+    fields: [
+      { name: 'id', type: 'number', description: 'ID unik artikel' },
+      { name: 'status', type: 'string', description: 'Status artikel (published/draft)' },
+      { name: 'date_created', type: 'string (ISO)', description: 'Waktu pembuatan' },
+      { name: 'judul', type: 'string', description: 'Judul artikel blog' },
+      { name: 'konten', type: 'string (HTML)', description: 'Isi artikel dalam format HTML' },
+      { name: 'image', type: 'string (UUID)', description: 'ID gambar untuk endpoint assets' },
+      { name: 'pic', type: 'string', description: 'Penulis atau PIC artikel' }
+    ],
     response: {
       structure: {
         data: [
           {
-            id: 'string (UUID)',
+            id: 'number',
             status: 'string',
-            sort: 'number | null',
-            user_created: 'string (UUID)',
-            date_created: 'string (ISO 8601)',
-            user_updated: 'string (UUID) | null',
-            date_updated: 'string (ISO 8601) | null',
-            Task: 'string',
-            project: 'string',
+            date_created: 'string',
+            judul: 'string',
+            konten: 'string',
             pic: 'string',
-            jam_mulai: 'string (HH:mm:ss)',
-            jam_selesai: 'string (HH:mm:ss)',
-            tanggal: 'string (YYYY-MM-DD)'
+            image: 'string (UUID)'
           }
         ]
       },
       example: {
         data: [
           {
-            id: "3c83e404-af14-4907-bd1f-f7760060cf4d",
-            status: "done",
-            sort: null,
-            user_created: "3a7d37fd-964a-4f9c-9ef9-f17b844ff643",
-            date_created: "2026-01-06T10:57:01.148Z",
-            user_updated: null,
-            date_updated: null,
-            Task: "Berhasil melakuakan deploy database dari supabase ke vps menggunakan docker, berhasil membuat sub domain di vps, berhasil membuat akses backend ke directus cms melalui dokploy, berhasil memanggil data di directus, membuat akun admin sementara di directus",
-            project: "Belajar & Eksplorisasi",
-            pic: "Kesya",
-            jam_mulai: "08:00:00",
-            jam_selesai: "17:00:00",
-            tanggal: "2026-01-06"
+            id: 1,
+            status: "draft",
+            date_created: "2026-01-15T09:11:01.095Z",
+            judul: "Mengenal Directus: CMS Rasa Aplikasi Premium",
+            konten: "<p>Directus bukan sekadar tempat menyimpan data...</p>",
+            pic: "kesya",
+            image: "5293054e-991a-440b-a267-b531a180ec18"
           }
         ]
       }
+    }
+  },
+  {
+    method: 'GET',
+    path: '/assets/:id',
+    description: 'Mengambil file gambar berdasarkan UUID yang didapat dari field "image" di Blogpost.',
+    baseUrl: 'https://api.kerjabaik.ai',
+    fields: [
+      { name: ':id', type: 'string (UUID)', description: 'UUID gambar (contoh: 5293054e...)' },
+      { name: 'quality', type: 'number (0-100)', description: 'Opsional: Kompresi kualitas gambar' },
+      { name: 'width', type: 'number', description: 'Opsional: Resize lebar gambar' }
+    ],
+    response: {
+      structure: 'Binary File (Image)',
+      example: 'Displays the image file directly in browser'
     }
   }
 ]
@@ -81,16 +96,11 @@ export default function Home() {
 
   const getMethodColor = (method: string) => {
     switch (method) {
-      case 'GET':
-        return '#10B981'
-      case 'POST':
-        return '#3B82F6'
-      case 'PUT':
-        return '#F59E0B'
-      case 'DELETE':
-        return '#EF4444'
-      default:
-        return '#6B7280'
+      case 'GET': return '#10B981'
+      case 'POST': return '#3B82F6'
+      case 'PUT': return '#F59E0B'
+      case 'DELETE': return '#EF4444'
+      default: return '#6B7280'
     }
   }
 
@@ -101,7 +111,7 @@ export default function Home() {
           <h1 className={styles.title}>
             <span className={styles.titleRed}>Blog</span> Kerjabaik AI
           </h1>
-          <p className={styles.subtitle}>API Documentation</p>
+          <p className={styles.subtitle}>Directus API Documentation</p>
         </div>
       </header>
 
@@ -130,6 +140,7 @@ export default function Home() {
         <div className={styles.content}>
           {selectedEndpoint && (
             <div className={styles.endpointDetail}>
+              {/* Header Section */}
               <div className={styles.endpointHeader}>
                 <div className={styles.endpointMethod}>
                   <span
@@ -152,6 +163,7 @@ export default function Home() {
                 <p className={styles.endpointDescription}>{selectedEndpoint.description}</p>
               </div>
 
+              {/* Response Structure */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Response Structure</h3>
                 <div className={styles.codeBlock}>
@@ -170,6 +182,7 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Example Response */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Example Response</h3>
                 <div className={styles.codeBlock}>
@@ -188,6 +201,7 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Field Descriptions - DYNAMIC TABLE */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Field Descriptions</h3>
                 <div className={styles.fieldTable}>
@@ -200,76 +214,19 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><code>id</code></td>
-                        <td>string (UUID)</td>
-                        <td>Unique identifier untuk setiap entri devlog</td>
-                      </tr>
-                      <tr>
-                        <td><code>status</code></td>
-                        <td>string</td>
-                        <td>Status dari task (contoh: "done", "in_progress", dll)</td>
-                      </tr>
-                      <tr>
-                        <td><code>sort</code></td>
-                        <td>number | null</td>
-                        <td>Urutan sorting untuk entri</td>
-                      </tr>
-                      <tr>
-                        <td><code>user_created</code></td>
-                        <td>string (UUID)</td>
-                        <td>ID user yang membuat entri</td>
-                      </tr>
-                      <tr>
-                        <td><code>date_created</code></td>
-                        <td>string (ISO 8601)</td>
-                        <td>Tanggal dan waktu pembuatan entri</td>
-                      </tr>
-                      <tr>
-                        <td><code>user_updated</code></td>
-                        <td>string (UUID) | null</td>
-                        <td>ID user yang terakhir mengupdate entri</td>
-                      </tr>
-                      <tr>
-                        <td><code>date_updated</code></td>
-                        <td>string (ISO 8601) | null</td>
-                        <td>Tanggal dan waktu update terakhir</td>
-                      </tr>
-                      <tr>
-                        <td><code>Task</code></td>
-                        <td>string</td>
-                        <td>Deskripsi task yang dikerjakan</td>
-                      </tr>
-                      <tr>
-                        <td><code>project</code></td>
-                        <td>string</td>
-                        <td>Nama project terkait</td>
-                      </tr>
-                      <tr>
-                        <td><code>pic</code></td>
-                        <td>string</td>
-                        <td>Person in Charge (PIC) untuk task tersebut</td>
-                      </tr>
-                      <tr>
-                        <td><code>jam_mulai</code></td>
-                        <td>string (HH:mm:ss)</td>
-                        <td>Waktu mulai kerja dalam format 24 jam</td>
-                      </tr>
-                      <tr>
-                        <td><code>jam_selesai</code></td>
-                        <td>string (HH:mm:ss)</td>
-                        <td>Waktu selesai kerja dalam format 24 jam</td>
-                      </tr>
-                      <tr>
-                        <td><code>tanggal</code></td>
-                        <td>string (YYYY-MM-DD)</td>
-                        <td>Tanggal kerja dalam format ISO date</td>
-                      </tr>
+                      {selectedEndpoint.fields.map((field, idx) => (
+                        <tr key={idx}>
+                          <td><code>{field.name}</code></td>
+                          <td>{field.type}</td>
+                          <td>{field.description}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
               </div>
 
+              {/* Usage Example */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Usage Example</h3>
                 <div className={styles.codeBlock}>
@@ -278,15 +235,10 @@ export default function Home() {
                     <button
                       className={styles.copyButton}
                       onClick={() => {
-                        const code = `fetch('${selectedEndpoint.baseUrl}${selectedEndpoint.path}')
+                        const code = `fetch('${selectedEndpoint.baseUrl}${selectedEndpoint.path.replace(':id', '1')}')
   .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    // Handle the data
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });`
+  .then(data => console.log(data))
+  .catch(error => console.error(error));`
                         copyToClipboard(code, 'usage')
                       }}
                     >
@@ -294,11 +246,10 @@ export default function Home() {
                     </button>
                   </div>
                   <pre>
-                    <code>{`fetch('${selectedEndpoint.baseUrl}${selectedEndpoint.path}')
+                    <code>{`fetch('${selectedEndpoint.baseUrl}${selectedEndpoint.path.replace(':id', '1')}')
   .then(response => response.json())
   .then(data => {
     console.log(data);
-    // Handle the data
   })
   .catch(error => {
     console.error('Error:', error);
@@ -317,4 +268,3 @@ export default function Home() {
     </div>
   )
 }
-
