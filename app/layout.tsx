@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Blog Kerjabaik AI - API Documentation',
-  description: 'Dokumentasi API untuk Blog Kerjabaik AI',
+  title: 'API Documentation',
+  description: 'Internal API Documentation',
 }
 
 export default function RootLayout({
@@ -12,10 +12,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id">
+    <html lang="en">
       <body>{children}</body>
     </html>
   )
 }
-
-

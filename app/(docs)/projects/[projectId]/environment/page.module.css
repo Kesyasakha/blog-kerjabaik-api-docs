@@ -1,0 +1,63 @@
+.container {
+  max-width: 900px;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-black);
+  margin-bottom: 40px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-black);
+  margin-bottom: 24px;
+}
+
+.environments {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.envCard {
+  padding: 24px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  background-color: var(--color-white);
+}
+
+.envName {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-black);
+  margin-bottom: 12px;
+}
+
+.envUrl {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 8px 12px;
+  background-color: var(--color-gray-100);
+  border-radius: 4px;
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: 12px;
+  word-break: break-all;
+}
+
+.envDescription {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}

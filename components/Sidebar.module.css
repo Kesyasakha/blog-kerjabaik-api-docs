@@ -1,0 +1,194 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--color-white);
+  border-right: 1px solid var(--color-gray-200);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-gray-200);
+  background-color: var(--color-white);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.nav {
+  flex: 1;
+  padding: 16px 0;
+}
+
+.navItem {
+  display: block;
+  padding: 10px 24px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-gray-700);
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.navItem:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-black);
+}
+
+.navItem.active {
+  background-color: var(--color-gray-50);
+  color: var(--color-primary);
+  border-left-color: var(--color-primary);
+  font-weight: 500;
+}
+
+.projectSection {
+  margin-top: 8px;
+}
+
+.projectLink {
+  display: block;
+  padding: 12px 24px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-black);
+  text-decoration: none;
+  background-color: var(--color-gray-50);
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.projectLink:hover {
+  background-color: var(--color-gray-100);
+}
+
+.projectLink.active {
+  background-color: var(--color-gray-100);
+  border-left-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.projectNav {
+  margin-top: 4px;
+  padding-left: 8px;
+}
+
+.section {
+  margin-top: 4px;
+}
+
+.sectionHeader,
+.subSectionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px 10px 32px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.sectionHeader:hover,
+.subSectionHeader:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-black);
+}
+
+.chevron {
+  font-size: 10px;
+  color: var(--color-gray-400);
+}
+
+.sectionContent {
+  padding-left: 8px;
+}
+
+.subSection {
+  margin-top: 2px;
+}
+
+.endpoints {
+  padding-left: 16px;
+}
+
+.endpointItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 24px 8px 48px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-gray-600);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.endpointItem:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-black);
+}
+
+.endpointItem.active {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.methodBadge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 44px;
+  text-align: center;
+  color: var(--color-white);
+}
+
+.methodBadge[data-method='GET'] {
+  background-color: #10B981;
+}
+
+.methodBadge[data-method='POST'] {
+  background-color: #3B82F6;
+}
+
+.methodBadge[data-method='PUT'] {
+  background-color: #F59E0B;
+}
+
+.methodBadge[data-method='PATCH'] {
+  background-color: #F59E0B;
+}
+
+.methodBadge[data-method='DELETE'] {
+  background-color: #EF4444;
+}
+
+.endpointPath {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: inherit;
+}
