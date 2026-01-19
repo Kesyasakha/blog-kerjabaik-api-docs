@@ -51,36 +51,44 @@ export default function ProjectOverviewPage({ params }: PageProps) {
         </div>
       </div>
 
-      {project.authentication && (
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Authentication</h2>
-          <p className={styles.text}>
-            <strong>Type:</strong> {project.authentication.type}
-          </p>
-          <p className={styles.text}>{project.authentication.description}</p>
-          {project.authentication.example && (
-            <pre className={styles.codeBlock}>
-              <code>{project.authentication.example}</code>
-            </pre>
-          )}
-        </div>
-      )}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Authentication</h2>
+        {project.authentication ? (
+          <>
+            <p className={styles.text}>
+              <strong>Type:</strong> {project.authentication.type}
+            </p>
+            <p className={styles.text}>{project.authentication.description}</p>
+            {project.authentication.example && (
+              <pre className={styles.codeBlock}>
+                <code>{project.authentication.example}</code>
+              </pre>
+            )}
+          </>
+        ) : (
+          <p className={styles.emptyText}>Informasi authentication belum tersedia.</p>
+        )}
+      </div>
 
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>API Groups</h2>
-        <div className={styles.groups}>
-          {project.apiGroups.map((group) => (
-            <div key={group.id} className={styles.groupCard}>
-              <h3 className={styles.groupName}>{group.name}</h3>
-              {group.description && (
-                <p className={styles.groupDescription}>{group.description}</p>
-              )}
-              <p className={styles.endpointCount}>
-                {group.endpoints.length} endpoint{group.endpoints.length !== 1 ? 's' : ''}
-              </p>
-            </div>
-          ))}
-        </div>
+        {project.apiGroups && project.apiGroups.length > 0 ? (
+          <div className={styles.groups}>
+            {project.apiGroups.map((group) => (
+              <div key={group.id} className={styles.groupCard}>
+                <h3 className={styles.groupName}>{group.name}</h3>
+                {group.description && (
+                  <p className={styles.groupDescription}>{group.description}</p>
+                )}
+                <p className={styles.endpointCount}>
+                  {group.endpoints.length} endpoint{group.endpoints.length !== 1 ? 's' : ''}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.emptyText}>Belum ada API groups yang tersedia.</p>
+        )}
       </div>
     </div>
   )

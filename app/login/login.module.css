@@ -66,6 +66,14 @@
   border-color: #FF2D2D;
 }
 
+.field input:invalid {
+  border-color: #FF2D2D;
+}
+
+.field input:valid {
+  border-color: #E5E5E5;
+}
+
 .error {
   font-family: 'Inter', -apple-system, sans-serif;
   font-size: 14px;

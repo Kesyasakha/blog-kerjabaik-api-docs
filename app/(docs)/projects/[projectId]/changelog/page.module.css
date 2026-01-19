@@ -68,3 +68,25 @@
   color: var(--color-primary);
   font-weight: bold;
 }
+
+.emptyState {
+  margin-top: 40px;
+  padding: 40px;
+  text-align: center;
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+}
+
+.emptyText {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--color-gray-700);
+  margin-bottom: 8px;
+}
+
+.emptySubtext {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-gray-500);
+}

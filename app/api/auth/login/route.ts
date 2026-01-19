@@ -1,52 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { findUserByEmail, verifyPassword } from '@/lib/db'
-import { createToken, setAuthCookie } from '@/lib/auth'
+import { verifyPassword } from '@/lib/db'
+import { setAuthCookie } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json()
+    const { password } = await request.json()
 
-    if (!email || !password) {
+    if (!password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: 'Password is required' },
         { status: 400 }
       )
     }
 
-    const user = await findUserByEmail(email)
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      )
-    }
-
-    const isValid = await verifyPassword(password, user.password)
+    const isValid = await verifyPassword(password)
 
     if (!isValid) {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { error: 'Invalid password' },
         { status: 401 }
       )
     }
 
-    const token = createToken({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    })
-
-    await setAuthCookie(token)
-
-    return NextResponse.json({
+    // Create response
+    const response = NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
     })
+
+    // Set simple session cookie
+    response.cookies.set('dev-session', 'authenticated', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    })
+
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(

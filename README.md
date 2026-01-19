@@ -4,7 +4,7 @@ Internal API documentation system with authentication and multi-project support.
 
 ## Features
 
-- **Authentication**: Simple login system with JWT tokens
+- **Authentication**: Simple password-based login with session cookie
 - **Multi-Project**: Support for multiple API projects in one system
 - **Clean Design**: Minimalist, backend-oriented UI
 - **Protected Routes**: All documentation routes require authentication

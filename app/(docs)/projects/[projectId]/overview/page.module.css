@@ -129,3 +129,10 @@
   font-size: 12px;
   color: var(--color-gray-500);
 }
+
+.emptyText {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-gray-500);
+  font-style: italic;
+}

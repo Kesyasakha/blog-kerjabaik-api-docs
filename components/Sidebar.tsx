@@ -84,7 +84,7 @@ export default function Sidebar() {
                     className={styles.sectionHeader}
                     onClick={() => toggleGroup('api')}
                   >
-                    <span>API Reference</span>
+                    <span>API Endpoints</span>
                     <span className={styles.chevron}>
                       {expandedGroups['api'] ? '▼' : '▶'}
                     </span>

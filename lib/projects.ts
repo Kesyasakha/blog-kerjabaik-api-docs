@@ -68,8 +68,8 @@ export const projects: Project[] = [
     techStack: ['Directus', 'PostgreSQL', 'Node.js'],
     baseUrl: {
       local: 'http://localhost:8055',
-      staging: 'https://staging-api.kerjabaik.dev',
-      production: 'https://api.kerjabaik.dev',
+      staging: 'https://staging-cms.kerjabaik.dev',
+      production: 'https://cms.kerjabaik.dev',
     },
     authentication: {
       type: 'Bearer Token',

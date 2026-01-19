@@ -93,7 +93,24 @@
   margin-top: 4px;
 }
 
-.sectionHeader,
+.sectionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
 .subSectionHeader {
   width: 100%;
   display: flex;
@@ -111,7 +128,11 @@
   transition: all 0.2s;
 }
 
-.sectionHeader:hover,
+.sectionHeader:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-black);
+}
+
 .subSectionHeader:hover {
   background-color: var(--color-gray-50);
   color: var(--color-black);

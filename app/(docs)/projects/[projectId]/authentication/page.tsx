@@ -11,8 +11,24 @@ interface PageProps {
 export default function AuthenticationPage({ params }: PageProps) {
   const project = getProject(params.projectId)
 
-  if (!project || !project.authentication) {
+  if (!project) {
     notFound()
+  }
+
+  if (!project.authentication) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>Authentication</h1>
+        <div className={styles.emptyState}>
+          <p className={styles.emptyText}>
+            Informasi authentication untuk project ini belum tersedia.
+          </p>
+          <p className={styles.emptySubtext}>
+            Section ini akan diupdate segera.
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (

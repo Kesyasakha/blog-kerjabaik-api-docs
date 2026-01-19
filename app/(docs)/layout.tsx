@@ -19,7 +19,7 @@ export default async function DocsLayout({
     <div className={styles.container}>
       <Sidebar />
       <div className={styles.main}>
-        <Header user={user} />
+        <Header />
         <main className={styles.content}>{children}</main>
       </div>
     </div>

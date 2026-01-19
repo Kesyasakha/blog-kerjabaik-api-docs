@@ -11,8 +11,24 @@ interface PageProps {
 export default function ErrorsPage({ params }: PageProps) {
   const project = getProject(params.projectId)
 
-  if (!project || !project.errorHandling) {
+  if (!project) {
     notFound()
+  }
+
+  if (!project.errorHandling) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>Error Handling</h1>
+        <div className={styles.emptyState}>
+          <p className={styles.emptyText}>
+            Dokumentasi error handling untuk project ini belum tersedia.
+          </p>
+          <p className={styles.emptySubtext}>
+            Section ini akan diupdate segera.
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (

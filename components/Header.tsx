@@ -1,20 +1,15 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { User } from '@/lib/auth'
 import styles from './Header.module.css'
 
-interface HeaderProps {
-  user: User
-}
-
-export default function Header({ user }: HeaderProps) {
-  const router = useRouter()
-
+export default function Header() {
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
-    router.push('/login')
-    router.refresh()
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+      window.location.href = '/login'
+    } catch (error) {
+      window.location.href = '/login'
+    }
   }
 
   return (
@@ -27,7 +22,7 @@ export default function Header({ user }: HeaderProps) {
         />
       </div>
       <div className={styles.user}>
-        <span className={styles.userEmail}>{user.email}</span>
+        <span className={styles.userEmail}>Developer</span>
         <button onClick={handleLogout} className={styles.logoutButton}>
           Logout
         </button>

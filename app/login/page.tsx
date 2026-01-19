@@ -1,12 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import styles from './login.module.css'
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -20,7 +17,8 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+        body: JSON.stringify({ password }),
       })
 
       const data = await res.json()
@@ -31,9 +29,8 @@ export default function LoginPage() {
         return
       }
 
-      // Redirect to dashboard
-      router.push('/')
-      router.refresh()
+      // Login successful - redirect immediately
+      window.location.href = '/'
     } catch (err) {
       setError('An error occurred. Please try again.')
       setLoading(false)
@@ -50,25 +47,16 @@ export default function LoginPage() {
           {error && <div className={styles.error}>{error}</div>}
           
           <div className={styles.field}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoFocus
-            />
-          </div>
-          
-          <div className={styles.field}>
             <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               required
+              autoFocus
+              placeholder="Enter password"
             />
           </div>
           
